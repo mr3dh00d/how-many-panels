@@ -21,6 +21,7 @@ const getHowManyPanelsFit = ({
 }) => {
     // Iniciamos el resultado en 0
     let result = 0
+    let widthAvailable : number
 
     switch (true) {
         case (roof.triangular):
@@ -33,15 +34,15 @@ const getHowManyPanelsFit = ({
             // calcular el angulo del cuadrado rectángulo formado
             const angle = Math.asin(roof.height / hip)
             // determinar cuanto ancho queda fuera del rectángulo dentro del triangulo
-            const withOut = panel.height / Math.tan(angle)
+            const widthOut = panel.height / Math.tan(angle)
             // determinar cuanto espacio queda disponible para poner los paneles
-            const withAvailable = roof.width - (withOut * 2)
+            widthAvailable = roof.width - (widthOut * 2)
             // si ya no hay espacio disponible retornar un resultado obtenido hasta el momento
-            if (withAvailable < panel.width || withAvailable < panel.height) return result
+            if (widthAvailable < panel.width || widthAvailable < panel.height) return result
             // calcular cuantos paneles caen en el rectángulo calculado dentro del triangulo
             result += getHowManyPanelsFit({
                 roof: {
-                    width: withAvailable,
+                    width: widthAvailable,
                     height: panel.height
                 },
                 panel
@@ -51,7 +52,7 @@ const getHowManyPanelsFit = ({
                 result += getHowManyPanelsFit({
                     roof: {
                         height: roof.height - panel.height,
-                        width: withAvailable,
+                        width: widthAvailable,
                         triangular: true
                     },
                     panel
@@ -86,7 +87,7 @@ const getHowManyPanelsFit = ({
             // determinamos cuantos paneles cen dentro del techo
             result += countWidth * countHeight
             // determinamos si aun hay espacio disponible en el ancho
-            const widthAvailable = roof.width - (panel.width * countWidth)
+            widthAvailable = roof.width - (panel.width * countWidth)
             // determinamos si aun hay espacio disponible en lo alto
             const heightAvailable = roof.height - (panel.height * countHeight)
             // revisamos si el ancho disponible es mayor a 0 y ademas cabe un panel a la inversa
