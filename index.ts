@@ -2,6 +2,11 @@ interface dimensions {
     width: number,
     height: number
 }
+
+type roofDimensions = dimensions & {
+    triangular?: boolean
+}
+
 /**
  * @description Función que retorna la cantidad de paneles que caen en un techo
  * Considerando que el techo es de dimensiones "a" y "b" (rectángulo) y los paneles "x" y "y" (rectángulo)
@@ -10,7 +15,7 @@ const getHowManyPanelsFit = ({
     roof,
     panel
 }: {
-    roof: dimensions,
+    roof: roofDimensions,
     panel: dimensions
 }) => {
     // Iniciamos el resultado en 0
@@ -21,14 +26,20 @@ const getHowManyPanelsFit = ({
         return result
     }
 
-    // Calculamos el area del techo y la dividimos en el area de los paneles
-    result = (roof.width * roof.height) / (panel.width * panel.height)
+    // Calculamos el area del techo
+    let roofArea =  (roof.width * roof.height)
+
+    // Si el techo es triangular dividimos en 2 su area
+    if (roof.triangular) roofArea /= 2 
+
+    // Dividimos el area del techo con en el area de los paneles
+    result = roofArea / (panel.width * panel.height)
 
     // Cortamos el numero al entero
     return Math.floor(result)
 }
 
-const roofs: dimensions[] = [
+const roofs: roofDimensions[] = [
     {
         width: 2,
         height: 4
@@ -40,6 +51,11 @@ const roofs: dimensions[] = [
     {
         width: 1,
         height: 10
+    },
+    {
+        width: 5,
+        height: 4,
+        triangular: true
     }
 ]
 
@@ -56,6 +72,10 @@ const panels: dimensions[] = [
         width: 2,
         height: 2
     },
+    {
+        width: 1,
+        height: 2
+    },
 ]
 
 roofs.forEach((roof, index) => {
@@ -67,7 +87,7 @@ roofs.forEach((roof, index) => {
     })
     
     console.log(`
-    En un techo de dimensiones ${roof.width}x${roof.height}
+    En un techo ${roof.triangular ? ("triangular") : ""} de dimensiones ${roof.width}x${roof.height}
     Encajan ${count} paneles de ${panel.width}x${panel.height}
     `)
 })
