@@ -85,8 +85,6 @@ const getHowManyPanelsFit = ({
             const countHeight = Math.floor(roof.height / panel.height)
             // determinamos cuantos paneles cen dentro del techo
             result += countWidth * countHeight
-            // si el resultado es 0 retornamos
-            if (!result) return result
             // determinamos si aun hay espacio disponible en el ancho
             const widthAvailable = roof.width - (panel.width * countWidth)
             // determinamos si aun hay espacio disponible en lo alto
