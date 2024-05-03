@@ -4,7 +4,7 @@
   "description": "Desafío de Ruuf para determinar cuantos paneles caen en un techo",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node index.ts"
   },
   "author": "Dereck Pavez",
   "license": "ISC",
